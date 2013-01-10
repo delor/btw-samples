@@ -77,7 +77,7 @@ public class Program {
         }
 
         public Map<String, Double> getProductTotals() {
-            return products;
+            return new HashMap<>(products);
         }
     }
 
