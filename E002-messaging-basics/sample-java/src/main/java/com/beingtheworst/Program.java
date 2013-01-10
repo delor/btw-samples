@@ -41,6 +41,9 @@ public class Program {
             throw new RuntimeException(e);
         }
 
+        applyMessage(basket, new AddProductToBasketMessage("book", 1));
+        applyMessage(basket, new RemoveProductFromBasketMessage("book"));
+
         for (Map.Entry<String, Double> total : basket.getProductTotals().entrySet()) {
             System.out.println("  " + total.getKey() + ": " + total.getValue());
         }
@@ -76,6 +79,14 @@ public class Program {
             addProduct(message.getName(), message.getQuantity());
         }
 
+        public void removeProduct(String name) {
+            products.remove(name);
+        }
+
+        public void when(RemoveProductFromBasketMessage message) {
+            removeProduct(message.getName());
+        }
+
         public Map<String, Double> getProductTotals() {
             return new HashMap<>(products);
         }
@@ -104,6 +115,25 @@ public class Program {
             return "AddProductToBasketMessage{" +
                     "name='" + name + '\'' +
                     ", quantity=" + quantity +
+                    '}';
+        }
+    }
+
+    private static class RemoveProductFromBasketMessage implements Serializable {
+        private final String name;
+
+        private RemoveProductFromBasketMessage(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return "RemoveProductFromBasketMessage{" +
+                    "name='" + name + '\'' +
                     '}';
         }
     }
